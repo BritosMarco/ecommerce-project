@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  doctorsql:
+    image: 'postgres:alpine'
+    ports:
+      - '5432:5432'
+    container_name: 'ecommercesql'
+    restart: always
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: pgecom
+      POSTGRES_PASSWORD: pgpassword
+
+volumes:
+  pg-data:
