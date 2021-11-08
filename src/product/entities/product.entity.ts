@@ -5,7 +5,13 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { Users } from 'src/users/entities/user.entity';
+import { Sales } from 'src/sales/entities/sales.entity';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -24,18 +30,28 @@ export class Product extends BaseEntity {
   @Column({ nullable: false, type: 'varchar', length: 200 })
   description: string;
 
-  @Column()
-  amount: number;
+  @Column({ nullable: false, type: 'varchar', length: 200 })
+  productImage: string;
 
   @Column()
-  unitPrice: number;
+  productQuantity: number;
 
   @Column()
-  totalPrice: number;
+  productBuyPrice: number;
+
+  @Column()
+  productSalesPrice: number;
 
   @CreateDateColumn()
   createdAd: Date;
 
   @UpdateDateColumn()
   updatedAd: Date;
-}
+
+  @ManyToOne(() => Users, (user) => user.sales)
+  user: Users;
+
+  /* @ManyToMany(() => Sales, (sales) => sales.products)
+  @JoinTable()
+  sales: Sales[];*/
+} 

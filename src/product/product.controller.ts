@@ -1,34 +1,70 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { ReturnProductDto } from './dto/return-products.dto';
 
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private productService: ProductService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  async createProducts(
+    @Body(ValidationPipe) createProductDto: CreateProductDto,
+  ): Promise<ReturnProductDto> {
+    const product = await this.productService.createProducts(createProductDto);
+    return {
+      product,
+      message: 'Produto cadastrado com sucesso',
+    };
   }
 
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  async findProductsAll() {
+    const found = await this.productService.findProductsAll();
+    return {
+      found,
+      message: 'Produtos encontrados',
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  async findProductId(@Param('id') id): Promise<ReturnProductDto> {
+    const product = await this.productService.findProductId(id);
+    return {
+      product,
+      message: 'Produto Localizado',
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+  async updateProduct(
+    @Body(ValidationPipe) updateProductDto: CreateProductDto,
+    @Param('id') id: string,
+  ): Promise<ReturnProductDto> {
+    const product = await this.productService.updateProduct(
+      updateProductDto,
+      id,
+    );
+    return {
+      product,
+      message: 'Produto Alterado com sucesso',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+  async deleteProduct(@Param('id') id: string) {
+    await this.productService.deleteProduct(id);
+    return {
+      message: 'Produto removido com sucesso',
+    };
   }
 }
