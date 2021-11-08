@@ -2,10 +2,11 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsString,
   MaxLength,
   Length,
+  IsArray,
 } from 'class-validator';
+import { Product } from 'src/product/entities/product.entity';
 import { Users } from 'src/users/entities/user.entity';
 
 export class CreateSalesDto {
@@ -20,6 +21,9 @@ export class CreateSalesDto {
 
   @IsNumber()
   totalQuantity: number;
+
+  @IsNumber()
+  orderNumber: number;
 
   @IsOptional({ message: 'Informe o numero do cartão' })
   @MaxLength(20, {
@@ -44,4 +48,7 @@ export class CreateSalesDto {
   validationCode: number;
 
   userId: Users;
+
+  @IsNotEmpty({ message: 'informe o código do produto' })
+  productId: Product[];
 }

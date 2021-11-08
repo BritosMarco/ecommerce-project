@@ -9,6 +9,7 @@ import {
   JoinColumn,
   OneToOne,
   ManyToMany,
+  OneToMany,
 } from 'typeorm';
 import { Users } from 'src/users/entities/user.entity';
 import { Product } from 'src/product/entities/product.entity';
@@ -21,10 +22,10 @@ export class Sales extends BaseEntity {
   @Column()
   totalQuantity: number;
 
-  @Column()
+  @Column('decimal', { precision: 20, scale: 2 })
   totalValueSale: number;
 
-  @Column()
+  @Column('decimal', { precision: 10, scale: 2 })
   totalValueItem: number;
 
   @Column()
@@ -35,12 +36,6 @@ export class Sales extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAd: Date;
-
-  /*  @ManyToMany(() => Product, (product) => product.sales)
-  products: Product[]; */
-
-  /*   @ManyToOne(() => Product, (product) => product.sales)
-  product: Product; */
 
   @Column()
   numberCard: string;
@@ -54,6 +49,18 @@ export class Sales extends BaseEntity {
   @Column()
   validationCode: number;
 
-  @ManyToOne(() => Users, (user) => user.sales)
+  @Column()
+  orderNumber: number;
+
+  @ManyToOne(() => Users, (user) => user.sales, {
+    cascade: true,
+    eager: true,
+  })
   user: Users;
+
+  @ManyToOne(() => Product, (product) => product.sales, {
+    cascade: true,
+    eager: true,
+  })
+  products: Product[];
 }

@@ -20,18 +20,22 @@ export class SalesRepository extends Repository<Sales> {
       validationDate,
       totalValueItem,
       totalQuantity,
+      orderNumber,
       userId,
+      productId,
     } = createSalesDto;
     const sales = this.create();
     sales.productQuantity = productQuantity;
     sales.totalValueItem = totalValueItem;
     sales.totalValueSale = totalValueSale;
     sales.totalQuantity = totalQuantity;
+    sales.orderNumber = orderNumber;
     sales.nameCard = nameCard;
     sales.numberCard = numberCard;
     sales.validationCode = validationCode;
     sales.validationDate = validationDate;
     sales.user = userId;
+    sales.products = productId;
 
     try {
       await sales.save();

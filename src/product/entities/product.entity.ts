@@ -9,6 +9,7 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { Users } from 'src/users/entities/user.entity';
 import { Sales } from 'src/sales/entities/sales.entity';
@@ -48,10 +49,6 @@ export class Product extends BaseEntity {
   @UpdateDateColumn()
   updatedAd: Date;
 
-  @ManyToOne(() => Users, (user) => user.sales)
-  user: Users;
-
-  /* @ManyToMany(() => Sales, (sales) => sales.products)
-  @JoinTable()
-  sales: Sales[];*/
-} 
+  @OneToMany(() => Sales, (sales) => sales.products)
+  sales: Sales[];
+}
